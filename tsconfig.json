@@ -26,7 +26,7 @@
       "@/models/*": ["server/models/*"],
       "@/middleware/*": ["server/middleware/*"],
       "@/controllers/*": ["server/controllers/*"],
-      "@/data/*": ["server/data/*"],
+      "@/data/*": ["data/*"],
       "@/lib/*": ["lib/*"],
       "@/utils/*": ["src/utils/*"],
       "@/react-query/*": ["src/react-query/*"],

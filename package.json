@@ -13,11 +13,13 @@
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx,css,md,json} server/**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc"
   },
   "dependencies": {
+    "axios": "^1.4.0",
     "morgan": "^1.10.0",
     "next": "12.2.5",
     "next-connect": "^0.13.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-query": "3.39.2"
   },
   "devDependencies": {
     "@types/morgan": "^1.9.3",
