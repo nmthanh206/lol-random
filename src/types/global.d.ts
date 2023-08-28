@@ -7,6 +7,7 @@ declare global {
   var numItem: number;
   var numChamp: number;
   var isNoDamage: boolean;
+  var version: string;
   var data: {
     team1: {
       champion: Champion;

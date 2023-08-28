@@ -1,6 +1,7 @@
+import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import champions from "@/data/convert-champion.json";
+// import champions from "@/data/convert-champion.json";
 import { Champion } from "@/src/types";
 import { genRandomItem } from "@/src/utils/genRandomItem";
 import { shuffleArray } from "@/src/utils/shuffleArray";
@@ -9,18 +10,45 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const result = await axios.get(
+    `http://ddragon.leagueoflegends.com/cdn/${
+      global.version || "13.16.1"
+    }/data/en_US/champion.json`,
+  );
+  const champions = Object.entries<any>(result.data.data).map(
+    ([
+      championName,
+      {
+        image: { full },
+        stats: { attackrange },
+        key,
+      },
+    ]) => {
+      return {
+        championName,
+        image: `http://ddragon.leagueoflegends.com/cdn/${
+          global.version || "13.16.1"
+        }/img/champion/${full}`,
+        id: key,
+        isMelee: attackrange <= 200,
+        isRange: attackrange > 200,
+      };
+    },
+  );
   if (req.method.toUpperCase() === "GET") {
     if (req.query?.reset) {
       // global.data = null;
       global.numItem = 2;
       global.numChamp = 16;
       global.isNoDamage = false;
+      global.version = "13.16.1";
       return res.status(200).json({
         message: "Oke",
 
         numChamp: global.numChamp,
         numItem: global.numItem,
         isNoDamage: global.isNoDamage,
+        version: global.version,
       });
     }
     if (req.query?.clear) {
@@ -37,6 +65,7 @@ export default async function handler(
       global.numItem = Number(req.query?.numItem) || global.numItem;
       global.numChamp = Number(req.query?.numChamp) || global.numChamp;
       global.isNoDamage = req.query?.isNoDamage === "true" || global.isNoDamage;
+      global.version = (req.query?.version as string) || "13.16.1";
       // global.data = null;
 
       return res.status(200).json({
@@ -44,6 +73,7 @@ export default async function handler(
         numChamp: global.numChamp,
         numItem: global.numItem,
         isNoDamage: global.isNoDamage,
+        version: global.version,
       });
     }
     if (req.query?.data) {
