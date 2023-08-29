@@ -10,31 +10,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const result = await axios.get(
-    `http://ddragon.leagueoflegends.com/cdn/${
-      global.version || "13.16.1"
-    }/data/en_US/champion.json`,
-  );
-  const champions = Object.entries<any>(result.data.data).map(
-    ([
-      championName,
-      {
-        image: { full },
-        stats: { attackrange },
-        key,
-      },
-    ]) => {
-      return {
-        championName,
-        image: `http://ddragon.leagueoflegends.com/cdn/${
-          global.version || "13.16.1"
-        }/img/champion/${full}`,
-        id: key,
-        isMelee: attackrange <= 200,
-        isRange: attackrange > 200,
-      };
-    },
-  );
+
   if (req.method.toUpperCase() === "GET") {
     if (req.query?.reset) {
       // global.data = null;
@@ -82,6 +58,31 @@ export default async function handler(
     if (global.data) {
       return res.status(200).json(global.data);
     }
+    const result = await axios.get(
+      `http://ddragon.leagueoflegends.com/cdn/${
+        global.version || "13.16.1"
+      }/data/en_US/champion.json`,
+    );
+    const champions = Object.entries<any>(result.data.data).map(
+      ([
+        championName,
+        {
+          image: { full },
+          stats: { attackrange },
+          key,
+        },
+      ]) => {
+        return {
+          championName,
+          image: `http://ddragon.leagueoflegends.com/cdn/${
+            global.version || "13.16.1"
+          }/img/champion/${full}`,
+          id: key,
+          isMelee: attackrange <= 200,
+          isRange: attackrange > 200,
+        };
+      },
+    );
     let randomArray = shuffleArray(champions);
     const team1Champion: Champion[] = randomArray.splice(
       0,
