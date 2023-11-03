@@ -17,7 +17,7 @@ export default async function handler(
       global.numItem = 2;
       global.numChamp = 16;
       global.isNoDamage = false;
-      global.version = "13.18.1";
+      global.version = "13.21.1";
       return res.status(200).json({
         message: "Oke",
 
@@ -41,7 +41,7 @@ export default async function handler(
       global.numItem = Number(req.query?.numItem) || global.numItem;
       global.numChamp = Number(req.query?.numChamp) || global.numChamp;
       global.isNoDamage = req.query?.isNoDamage === "true" || global.isNoDamage;
-      global.version = (req.query?.version as string) || "13.18.1";
+      global.version = (req.query?.version as string) || "13.21.1";
       // global.data = null;
 
       return res.status(200).json({
@@ -60,7 +60,7 @@ export default async function handler(
     }
     const result = await axios.get(
       `http://ddragon.leagueoflegends.com/cdn/${
-        global.version || "13.18.1"
+        global.version || "13.21.1"
       }/data/en_US/champion.json`,
     );
     const champions = Object.entries<any>(result.data.data).map(
@@ -75,7 +75,7 @@ export default async function handler(
         return {
           championName,
           image: `http://ddragon.leagueoflegends.com/cdn/${
-            global.version || "13.18.1"
+            global.version || "13.21.1"
           }/img/champion/${full}`,
           id: key,
           isMelee: attackrange <= 200,
